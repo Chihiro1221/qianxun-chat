@@ -42,12 +42,11 @@ public class ListenerThread implements Runnable {
                     } else if (data.contains("来自好友")) {
                         System.out.print(response);
                     } else {
-                        if (data.contains("登录后操作")) {
-                            ChatClient.isLogin = false;
-                        } else if (data.contains("登录成功")) {
-                            ChatClient.isLogin = true;
-                        }
                         System.out.print("\033[1;34m[服务端消息]：\033[0m" + response);
+                    }
+                    if (data.contains("顶下线")) {
+                        ChatClient.closeResource();
+                        running = false;
                     }
                 }
                 //ChatClient.receiveUserOperator();

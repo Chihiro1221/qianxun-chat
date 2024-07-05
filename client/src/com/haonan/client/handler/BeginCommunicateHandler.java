@@ -26,9 +26,6 @@ public class BeginCommunicateHandler implements OperatorType {
     @Override
     public void handle(BufferedReader in, PrintWriter out) {
         HttpUtil.printRequest(out, RouteEnum.SHOW_ALL_FRIENDS.getPath());
-        if (!ChatClient.isLogin) {
-            return;
-        }
         Scanner scanner = new Scanner(System.in);
         String userName = scanner.nextLine();
         if (userName.trim().equals("#")) return;
@@ -36,7 +33,6 @@ public class BeginCommunicateHandler implements OperatorType {
         String message = "";
         while (true) {
             HashMap<String, String> body = new HashMap<>();
-            //System.out.print("我：");
             message = scanner.nextLine();
             if (message.equals("#")) break;
             if (message.trim().isEmpty()) continue;

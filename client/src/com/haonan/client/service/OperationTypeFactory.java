@@ -34,7 +34,7 @@ public class OperationTypeFactory {
      * @param opNum
      * @return
      */
-    public OperatorType getHandler(Integer opNum) {
+    public static OperatorType getHandler(Integer opNum) {
         OperatorEnum operatorEnum = OperatorEnum.getOperatorEnum(opNum);
         OperatorType handler = hashMap.get(operatorEnum);
         return handler;

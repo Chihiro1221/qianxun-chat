@@ -1,5 +1,6 @@
 package com.haonan.server;
 
+import com.haonan.server.service.RouteMappingFactory;
 import com.haonan.server.utils.LoggerUtils;
 
 import java.io.IOException;
@@ -14,9 +15,14 @@ import java.util.concurrent.Executors;
 /**
  * 聊天服务端
  */
-public class ChatServer {
+public class ChatServer extends HandleChatThread {
     private static final ExecutorService POOL = Executors.newFixedThreadPool(1000);
     private static ServerSocket serverSocket = null;
+
+    public ChatServer(Socket connection) {
+        super(connection);
+    }
+
     /**
      * 在线用户列表
      */

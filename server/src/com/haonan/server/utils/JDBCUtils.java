@@ -8,7 +8,7 @@ import java.sql.*;
  * @author wanghaonan
  */
 public class JDBCUtils {
-    private static final String URL = "jdbc:mysql://123.57.162.28/Network213Chat";
+    private static final String URL = "jdbc:mysql://localhost/Network213Chat";
     private static final String USER = "root";
     private static final String PASSWORD = "youzhi..";
 

@@ -10,7 +10,7 @@ import java.util.HashMap;
  *
  * @author wanghaoann
  */
-public class RouteMappingFactory {
+public abstract class RouteMappingFactory implements RouteMapping {
     private static HashMap<RouteEnum, RouteMapping> routeMappingTable = new HashMap<>();
 
     static {
@@ -37,7 +37,7 @@ public class RouteMappingFactory {
      * @param path
      * @return
      */
-    public RouteMapping getHandler(String path) {
+    public static RouteMapping getHandler(String path) {
         RouteEnum routeEnum = RouteEnum.getRouteEnum(path);
         RouteMapping routeMapping = routeMappingTable.get(routeEnum);
         return routeMapping;

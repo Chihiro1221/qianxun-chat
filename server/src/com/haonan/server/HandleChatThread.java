@@ -34,7 +34,7 @@ public class HandleChatThread implements Runnable {
     public void run() {
         try (
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-                PrintWriter out = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8));
+                PrintWriter out = new PrintWriter(new OutputStreamWriter(connection.getOutputStream(), StandardCharsets.UTF_8), true);
         ) {
             while (!isClose) {
                 // 读取请求行
@@ -66,17 +66,20 @@ public class HandleChatThread implements Runnable {
                 requestLog.append("请求体: " + requestBody);
                 requestLog.append("请求资源: " + path + "\r\n");
                 LoggerUtils.logInfo(requestLog.toString());
-                RouteMappingFactory routeMappingFactory = new RouteMappingFactory();
-                RouteMapping handler = routeMappingFactory.getHandler(path);
+                // 根据工厂类获取请求资源对应的控制器
+                RouteMapping handler = RouteMappingFactory.getHandler(path);
                 if (handler == null) {
                     HttpUtil.printResponse(out, 404, "请求资源不存在！");
                     return;
                 }
+                // 调用控制器方法
                 handler.handle(requestBody.toString(), out);
             }
         } catch (SocketException e) {
+            // 清除资源
             User user = UserHolder.getUser();
             ChatServer.ONLINE_USERS.remove(user.getUsername());
+            // 通知所有其他用户
             ChatServer.ONLINE_USERS.forEach((userName, userOut) -> {
                 HttpUtil.printResponse(userOut, 200, "用户【" + user.getUsername() + "】已下线！");
             });

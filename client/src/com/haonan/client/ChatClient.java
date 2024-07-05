@@ -24,7 +24,6 @@ public class ChatClient {
     public static final Scanner scanner = new Scanner(System.in);
     private static final ExecutorService pool = Executors.newFixedThreadPool(100);
     public static final LinkedBlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
-    public static boolean isLogin = false;
 
     public static void main(String[] args) {
         try {
@@ -56,8 +55,7 @@ public class ChatClient {
                 printInterface();
                 String input = scanner.nextLine();
                 int opNum = Integer.parseInt(input);
-                OperationTypeFactory operationTypeFactory = new OperationTypeFactory();
-                OperatorType handler = operationTypeFactory.getHandler(opNum);
+                OperatorType handler = OperationTypeFactory.getHandler(opNum);
                 if (handler == null) {
                     System.out.println("输出参数错误！");
                 } else {
@@ -85,7 +83,7 @@ public class ChatClient {
             System.out.println("\033[1;32m3. 开始聊天\033[0m");
             System.out.println("\033[1;32m4. 处理好友申请\033[0m");
             System.out.println("\033[1;32m5. 退出系统\033[0m");
-            System.out.println("\033[1;36m请输入选项(1-4):\033[0m ");
+            System.out.println("\033[1;36m请输入选项(0-5):\033[0m ");
         }
     }
 
@@ -103,6 +101,7 @@ public class ChatClient {
      */
     public static void closeResource() {
         try {
+            running = false;
             socket.close();
             in.close();
             out.close();

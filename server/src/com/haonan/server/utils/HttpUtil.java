@@ -51,6 +51,17 @@ public class HttpUtil {
     }
 
     public static void printResponse(PrintWriter out, Integer statusNum, String data) {
+        // 输出状态行
+        //out.println("HTTP/1.1 " + statusNum + " " + "ok");
+        //
+        //// 输出响应头
+        //out.println("Content-Type: application/json; charset=UTF-8");
+        //out.println("Content-Length: " + data.length());
+        //out.println("Connection: keep-alive");
+        //out.println("Server: QxChatServer/1.0");
+        //out.println();
+
+        // 输出响应体
         out.println(data);
         out.println();
         out.flush();

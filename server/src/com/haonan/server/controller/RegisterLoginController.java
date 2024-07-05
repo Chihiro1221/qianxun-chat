@@ -25,12 +25,6 @@ public class RegisterLoginController implements RouteMapping {
     @Override
     public void handle(String requestBody, PrintWriter out) {
         User currentUser = UserHolder.getUser();
-        // 已经登陆过
-        if (currentUser != null) {
-            // 清除之前登录的记录
-            UserHolder.removeUser();
-            ChatServer.ONLINE_USERS.remove(currentUser.getUsername());
-        }
         User user = JSON.parseObject(requestBody, User.class);
         // 不为空
         if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
@@ -66,6 +60,19 @@ public class RegisterLoginController implements RouteMapping {
                         JDBCUtils.closeStatement(resultSet);
                     }
                 }
+            }
+            // 如果该账户已登陆过
+            if (ChatServer.ONLINE_USERS.get(user.getUsername()) != null) {
+                // 同時判斷是否頂號
+                PrintWriter printWriter = ChatServer.ONLINE_USERS.get(user.getUsername());
+                printWriter.println("您已被顶下线");
+                printWriter.close();
+                // 清除之前登录的记录
+                ChatServer.ONLINE_USERS.remove(user.getUsername());
+            }
+            // 证明当前还登陆着其他账户，要清除掉
+            if (currentUser != null) {
+                ChatServer.ONLINE_USERS.remove(currentUser.getUsername(), out);
             }
             // 将当前用户信息保存到指定线程变量中
             UserHolder.setUser(user);
